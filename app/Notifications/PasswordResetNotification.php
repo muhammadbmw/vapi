@@ -36,13 +36,13 @@ class PasswordResetNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $urlToResetForm = "https://vueapp.test/vue-app/reset-password-form/?token=". $this->token;
+        $urlToResetForm = "http://localhost:4200/reset/?token=". $this->token."&email=".$notifiable->email;
         return (new MailMessage)
-            ->subject(Lang::getFromJson('Hey! Reset Password Notification'))
-            ->line(Lang::getFromJson('You requested here you go!'))
+             ->subject(Lang::getFromJson('Reset Password Notification'))
+            ->line(Lang::getFromJson('You are receiving this email because we received a password reset request for your account.'))
             ->action(Lang::getFromJson('Reset Password'), $urlToResetForm)
-            ->line(Lang::getFromJson('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.users.expire')]))
-            ->line(Lang::getFromJson('If you did not request a password reset, no further action is required. Token: ==>'. $this->token));
+              ->line(Lang::getFromJson('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.users.expire')]))
+            ->line(Lang::getFromJson('If you did not request a password reset, no further action is required.'));
     }
     /**
      * Get the array representation of the notification.

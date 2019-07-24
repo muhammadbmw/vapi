@@ -42,6 +42,10 @@ class User extends Authenticatable
 	public function leads(){
        return $this->hasMany('App\Lead');
     }
+	public function profile()
+    {
+        return $this->hasOne('App\Profile');
+    }
 	/**
  * Send the password reset notification.
  *

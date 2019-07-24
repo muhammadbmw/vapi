@@ -4,7 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User; 
+use App\User;
+use App\Profile;  
 use Illuminate\Support\Facades\Auth; 
 use Validator;
 
@@ -19,9 +20,9 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'gv_id' => 'required',
+            'email' => 'required|email|unique:users|string',
+            'password' => 'required|min:8|string',
+            'gv_id' => 'required|integer|unique:users',
         ]);
         if ($validator->fails()) {
             $response = [
@@ -32,6 +33,7 @@ class UserController extends Controller
             return response()->json($response, 200);
            
         }
+		
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
@@ -42,6 +44,9 @@ class UserController extends Controller
             'data' => $success,
             'message' => 'User register successfully.'
         ];
+		Profile::create([
+			'user_id' => $user->id,
+		]);
         return response()->json($response, 200);
     }
     /**
@@ -96,5 +101,6 @@ class UserController extends Controller
         return response()->json($response, 200);
 		
     }
+	
     
 }

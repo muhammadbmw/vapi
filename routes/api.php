@@ -24,4 +24,6 @@ Route::middleware('auth:api')->group(function () {
 		Route::post('lead', 'API\LeadController@details');
 		Route::post('contacts', 'API\LeadController@clist');
 		Route::post('logout', 'API\UserController@logout');
+		Route::post('profile', 'API\ProfileController@profile');
+		Route::post('profile/update', 'API\ProfileController@update');
 });
